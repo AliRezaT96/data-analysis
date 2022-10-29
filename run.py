@@ -4,6 +4,8 @@ import arabic_reshaper
 from bidi.algorithm import get_display
 import matplotlib.pyplot as plt
 from collections import defaultdict
+import seaborn as sns
+sns.set()
 
 all_captions = []
 with open('/data/captions.txt', 'r', encoding='utf-8-sig') as f:
@@ -36,6 +38,12 @@ for i in range(len(data.keys())):
     reshaped = arabic_reshaper.reshape(list(data.keys())[i])
     att_list.append(get_display(reshaped))
 
+# plot distribution of number of words for each caption
+sns.displot(data=df, x='words_count', kind='hist', aspect=1.4)
+plt.show()
+
+
+# number of values for each attribute
 plt.title('number of values per attribute')
 plt.xticks(rotation='vertical')
 plt.bar(att_list, data.values())
@@ -49,6 +57,7 @@ for text in df.caption:
 
 df_values2gram = pd.DataFrame(sorted(BigramValues.items(),key=lambda x:x[1],reverse=True))
 
+# for showing more or less number of words, change range number:
 bi1=df_values2gram[0][:20]
 bi2=df_values2gram[1][:20]
 
@@ -65,7 +74,6 @@ plt.bar(bigram,bi2, color ='blue',
 plt.xlabel("Words")
 plt.ylabel("Count")
 plt.title("Bigram: Top 20 words")
-# plt.savefig("bigram.png")
 plt.show()
 
 
@@ -77,7 +85,7 @@ for text in df.caption:
 
 df_values3gram = pd.DataFrame(sorted(TrigramValues.items(),key=lambda x:x[1],reverse=True))
 
-
+# for showing more or less number of words, change range number:
 ti1=df_values3gram[0][:20]
 ti2=df_values3gram[1][:20]
 
@@ -98,5 +106,4 @@ plt.bar(trigram,ti2, color ='blue',
 plt.xlabel("Words")
 plt.ylabel("Count")
 plt.title("Trigram: Top 20 words")
-# plt.savefig("bigram.png")
 plt.show()
