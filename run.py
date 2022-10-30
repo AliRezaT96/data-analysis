@@ -73,7 +73,4 @@ ti_num=df_values3gram[1][:20]
 
 trigram = text_reshaper(ti_text)
 
-# In[165]:
-
-
-print(plot_Ngrams(trigram, ti_num, trigram))
+print(plot_Ngrams(trigram, ti_num, 'trigram'))
