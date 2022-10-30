@@ -43,7 +43,7 @@ def generate_N_grams(text,ngram):
     return ans
     
 
-def plot_Ngrams(ngram_text, ngram_num):
+def plot_Ngrams(ngram_text, ngram_num, ngram):
     plt.xticks(rotation='vertical')
     plt.figure(1,figsize=(16,4))
     plt.bar(ngram_text, ngram_num, color ='blue',
@@ -51,5 +51,6 @@ def plot_Ngrams(ngram_text, ngram_num):
     plt.xlabel("Words")
     plt.ylabel("Count")
     plt.title("Top 20 words")
+    plt.savefig(f'{ngram}.jpg')
     fig = plt.show()
     return fig

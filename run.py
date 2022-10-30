@@ -50,6 +50,7 @@ reshaped_attr_list = text_reshaper(list(attribute_count.keys())) # reshape attri
 plt.title('number of values per attribute')
 plt.xticks(rotation='vertical')
 plt.bar(reshaped_attr_list, attribute_count.values())
+plt.savefig('number of values')
 plt.show()
 
 # bigram
@@ -61,7 +62,7 @@ bi_num=df_values2gram[1][:20]
 
 bigram = text_reshaper(bi_text)
 
-print(plot_Ngrams(bigram, bi_num))
+print(plot_Ngrams(bigram, bi_num, 'bigram'))
 
 # trigram
 df_values3gram = NgramsValue(df, 3)
@@ -75,4 +76,4 @@ trigram = text_reshaper(ti_text)
 # In[165]:
 
 
-print(plot_Ngrams(trigram, ti_num))
+print(plot_Ngrams(trigram, ti_num, trigram))
