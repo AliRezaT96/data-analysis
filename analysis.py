@@ -1,67 +1,39 @@
+import pandas as pd
+import arabic_reshaper
+from bidi.algorithm import get_display
+from collections import defaultdict
+import matplotlib.pyplot as plt
+
 def num_val_for_attr(df):
-    model = 0
-    origin = 0
-    texture = 0
-    color = 0
-    size = 0
-    price = 0
-    quality = 0
-    weight = 0
-    style = 0
-    sex = 0
-    brand = 0
-    loc = 0
-    season = 0
-    product = 0
+    attributes = pd.unique(df.attribute)
+    attribute_counts = {}
     
-    for i in range(len(df)):
-        if df.attribute[i] == 'مدل و نوع':
-            model+=1
-        elif df.attribute[i] == 'اصالت':
-            origin+=1
-        elif df.attribute[i] == 'جنس':
-            texture+=1
-        elif df.attribute[i] == 'رنگ':
-            color+=1
-        elif df.attribute[i] == 'سایز':
-            size+=1
-        elif df.attribute[i] == 'قیمت':
-            price+=1
-        elif df.attribute[i] == 'کیفیت':
-            quality+=1
-        elif df.attribute[i] == 'وزن':
-            weight+=1
-        elif df.attribute[i] == 'استایل':
-            style+=1
-        elif df.attribute[i] == 'جنسیت':
-            sex+=1
-        elif df.attribute[i] == 'برند':
-            brand+=1
-        elif df.attribute[i] == 'مکان':
-            loc+=1
-        elif df.attribute[i] == 'فصل':
-            season+=1
-        elif df.attribute[i] == 'محصول':
-            product+=1
-    
-    attribute_counts = {
-        'مدل و نوع': model,
-        'اصالت': origin,
-        'جنس': texture,
-        'رنگ': color,
-        'سایز': size,
-        'قیمت': price,
-        'کیفیت': quality,
-        'وزن': weight,
-        'استایل': style,
-        'جنسیت': sex,
-        'برند': brand,
-        'مکان': loc,
-        'فصل': season,
-        'محصول': product,
-    }
-    
+    for attr in attributes:
+        count = 0
+        for i in range(len(df)):
+            if df.attribute[i] == attr:
+                count+=1
+                
+        attribute_counts[attr] = count
+
     return attribute_counts
+
+def text_reshaper(text):
+    att_list = []
+    for i in range(len(text)):
+        reshaped = arabic_reshaper.reshape(text[i])
+        att_list.append(get_display(reshaped))
+    
+    return att_list
+
+def NgramsValue(df, n): # n --> 2: bigram, 3: trigram
+    Values = defaultdict(int)
+    for text in df.caption:
+        for word in generate_N_grams(text,n):
+            Values[word]+=1
+    df_values = pd.DataFrame(sorted(Values.items(),key=lambda x:x[1],reverse=True))
+
+    return df_values
 
 
 def generate_N_grams(text,ngram):
@@ -70,3 +42,14 @@ def generate_N_grams(text,ngram):
     ans=[' '.join(ngram) for ngram in temp]
     return ans
     
+
+def plot_Ngrams(ngram_text, ngram_num):
+    plt.xticks(rotation='vertical')
+    plt.figure(1,figsize=(16,4))
+    plt.bar(ngram_text, ngram_num, color ='blue',
+            width = 0.4)
+    plt.xlabel("Words")
+    plt.ylabel("Count")
+    plt.title("Top 20 words")
+    fig = plt.show()
+    return fig
