@@ -1,0 +1,4 @@
+arabic-reshaper==2.1.4
+python-bidi==0.4.2
+collection==0.1.6
+matplotlib==3.5.1
