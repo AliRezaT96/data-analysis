@@ -1,4 +1,4 @@
-data: 'C:/Users/ap/Desktop/captions.txt'
+data: './captions.txt'
 ngram_number: 20 # top 20 of most ngram
 
 model: "مدل و نوع"

@@ -12,7 +12,7 @@ sns.set()
 from data import read_data
 
 
-with open('config.yaml') as f:
+with open('config.yaml',encoding='utf8') as f:
     opt = yaml.load(f, SafeLoader)
 
 df = read_data(opt['data'])
@@ -97,13 +97,11 @@ class Analysis():
         plt.bar(text_reshaper(list(self.attributes)), self.data.attribute.value_counts())
         plt.savefig('value per attribute.jpg')
         plt.show()
-
     
     def plot_word_count(self):
         self.data.words_count.plot(kind='hist')
 
     def word_cloud(self):
-
         # most common words in each attribute
         def most_common(counter, attr):
             freq_df = pd.DataFrame.from_records(counter.most_common(20), columns=['token', 'count'])
@@ -111,7 +109,6 @@ class Analysis():
             plt.title(f'{get_display(arabic_reshaper.reshape(attr))} most common')
             plt.savefig(f'{attr} most common words.jpg')
             plt.show()
-
 
         for attr in self.attributes:
             attr_df = self.data[self.data['attribute'] == attr]
