@@ -17,6 +17,9 @@ with open('config.yaml',encoding='utf8') as f:
 
 df = read_data(opt['data'])
 
+
+
+
 def wordcloud(counter, name):
     wc = WordCloudFa(width=1200, height=800, 
                    background_color="white", 
@@ -31,6 +34,19 @@ def wordcloud(counter, name):
     plt.tight_layout(pad=0)
     plt.savefig(f"{get_display(arabic_reshaper.reshape(name))}'s word cloud.jpg")
     plt.show()
+
+
+def common_words(attr1, attr2):
+
+    attribute1 = list(df[df['attribute']==attr1].value.values)
+    attribute2 = list(df[df['attribute']==attr2].value.values)
+
+    common = []
+    for i in range(len(attribute1)):
+        for j in range(len(attribute2)):
+            if attribute1[i] == attribute2[j]:
+                common.append(attribute1[i])
+    plt.show(wordcloud(Counter(common), get_display(arabic_reshaper.reshape(f"اشتراک {attr1} و {attr2}"))))
 
 
 def text_reshaper(text):
