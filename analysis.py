@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from wordcloud_fa import WordCloudFa
 import yaml
 from yaml.loader import SafeLoader
+import re
 import seaborn as sns
 sns.set()
 
@@ -16,6 +17,7 @@ with open('config.yaml',encoding='utf8') as f:
     opt = yaml.load(f, SafeLoader)
 
 df = read_data(opt['data'])
+df_ner = read_data(opt['data_ner'])
 
 
 
@@ -47,6 +49,18 @@ def common_words(attr1, attr2):
             if attribute1[i] == attribute2[j]:
                 common.append(attribute1[i])
     plt.show(wordcloud(Counter(common), get_display(arabic_reshaper.reshape(f"اشتراک {attr1} و {attr2}"))))
+
+
+def common_words_no_attr():
+    captions = list(df_ner['caption'])
+    for i in range(len(df_ner['value'])):
+        for val in df_ner['value'][i].split(','):
+            captions[i] = re.sub(val, '', captions[i])
+    
+    all_captions = []
+    for i in range(len(captions)):
+        all_captions.extend(captions[i].split())
+    wordcloud(Counter(all_captions), get_display(arabic_reshaper.reshape('کلمات مشترک بدون ویژگی')))
 
 
 def text_reshaper(text):
